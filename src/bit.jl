@@ -43,7 +43,7 @@ end
 
 Returns the index of the next true element in the `range` of `uint`, or nothing if all false. Index of unit starts from 0.
 """
-function bitfindnext(uint::UInt64, start::Integer, r::UnitRange{Int64}; not_found = nothing)
+function bitfindnext(uint::UInt64, start::Integer, r::UnitRange; not_found = nothing)
     start = Int(start)
     if start == r.stop + 1  # carry (in math)
         start = r.start
@@ -75,7 +75,7 @@ function bitfindnext(uint::UInt64, start::Integer, r::UnitRange{Int64}; not_foun
 end
 
 
-function bitsfind(uint::UInt64, r::UnitRange{Int64}; empty_add_0::Bool = false)
+function bitsfind(uint::UInt64, r::UnitRange; empty_add_0::Bool = false)
     res = Vector{Int64}()
     for i in r
         if bitgetindex(uint, i)

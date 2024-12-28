@@ -1,11 +1,11 @@
 
 mutable struct Cron
-    second::UInt
-    minute::UInt
-    hour::UInt
-    day_of_month::UInt
-    month::UInt
-    day_of_week::UInt
+    second::UInt64
+    minute::UInt64
+    hour::UInt64
+    day_of_month::UInt64
+    month::UInt64
+    day_of_week::UInt64
     function Cron(second, minute, hour, day_of_month, month, day_of_week)
         new(
             cron_value_parse(second),
@@ -140,10 +140,10 @@ end
 
 Parse crontab-like value to `UInt`. See details: [`Cron`](@ref).
 """
-@inline function cron_value_parse(value::UInt)
-    value
+@inline function cron_value_parse(value::Unsigned)
+    UInt64(value)
 end
-@inline function cron_value_parse(value::Int)
+@inline function cron_value_parse(value::Integer)
     if value > 60 || value < 0
         error("Cron: cannot parse $value::Int: out of range.")
     end
@@ -396,7 +396,7 @@ end
     is_every_day_of_week(c) || is_every_month_day(c)
 end
 
-@inline function is_one_at(uint::UInt, idx::Int)
+@inline function is_one_at(uint::Unsigned, idx::Integer)
     x = 1 << idx
     uint & x == x
 end

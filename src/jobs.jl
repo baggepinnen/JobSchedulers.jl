@@ -1,10 +1,10 @@
 """
-    generate_id() :: Int
+    generate_id() :: Int64
 
 Generate ID. It is unique in most instances.
 """
 function generate_id()
-    time_value = (now().instant.periods.value - 63749462400000) << 16
+    time_value = (now().instant.periods.value - 63749462400000) << Int64(16)
     rand_value = rand(UInt16)
     time_value + rand_value
 end
@@ -54,11 +54,11 @@ format_stdxxx_file(x) = ""
     Redirecting in Julia are not thread safe, so unexpected redirection might be happen if you are running programs in different `Tasks` simultaneously (multi-threading).
 """
 mutable struct Job
-    id::Int
+    id::Int64
     name::String
     user::String
     ncpu::Float64
-    mem::Int
+    mem::Int64
     schedule_time::DateTime
     submit_time::DateTime
     start_time::DateTime
@@ -75,7 +75,7 @@ mutable struct Job
     _thread_id::Int
     _func::Union{Function,Nothing}
 
-    function Job(id::Int, name::String, user::String, ncpu::Real, mem::Int, schedule_time::ST, submit_time::DateTime, start_time::DateTime, stop_time::DateTime, wall_time::Period, cron::Cron, until::ST2, state::Symbol, priority::Int, dependency, task::Union{Task,Nothing}, stdout_file::String, stderr_file::String, _thread_id::Int = 0, _func = task.code) where {ST<:Union{DateTime,Period}, ST2<:Union{DateTime,Period}}
+    function Job(id::Integer, name::String, user::String, ncpu::Real, mem::Integer, schedule_time::ST, submit_time::DateTime, start_time::DateTime, stop_time::DateTime, wall_time::Period, cron::Cron, until::ST2, state::Symbol, priority::Int, dependency, task::Union{Task,Nothing}, stdout_file::String, stderr_file::String, _thread_id::Int = 0, _func = task.code) where {ST<:Union{DateTime,Period}, ST2<:Union{DateTime,Period}}
         check_ncpu_mem(ncpu, mem)
         check_priority(priority)
         new(id, name, user, Float64(ncpu), mem, period2datetime(schedule_time), submit_time, start_time, stop_time, wall_time, cron, period2datetime(until), state, priority, convert_dependency(dependency), task, stdout_file, stderr_file, _thread_id, _func)
@@ -89,7 +89,7 @@ function Job(task::Task;
     name::AbstractString = "",
     user::AbstractString = "",
     ncpu::Real = 1.0,
-    mem::Int = 0,
+    mem::Integer = 0,
     schedule_time::Union{DateTime,Period} = DateTime(0),
     wall_time::Period = Year(1),
     cron::Cron = Cron(:none),
@@ -111,7 +111,7 @@ function Job(f::Function;
     name::AbstractString = "",
     user::AbstractString = "",
     ncpu::Real = 1.0,
-    mem::Int = 0,
+    mem::Integer = 0,
     schedule_time::Union{DateTime,Period} = DateTime(0),
     wall_time::Period = Year(1),
     cron::Cron = Cron(:none),
@@ -133,7 +133,7 @@ function Job(command::Base.AbstractCmd;
     name::AbstractString = "",
     user::AbstractString = "",
     ncpu::Real = 1.0,
-    mem::Int = 0,
+    mem::Integer = 0,
     schedule_time::Union{DateTime,Period} = DateTime(0),
     wall_time::Period = Year(1),
     cron::Cron = Cron(:none),
