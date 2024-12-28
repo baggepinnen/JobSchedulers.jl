@@ -157,7 +157,7 @@ function recover_backup(filepath::AbstractString; recover_settings::Bool = true,
     if recover_queue
         @debug "recover_backup($filepath; recover_settings = $recover_settings, recover_queue = $recover_queue)"
         wait_for_lock()
-            current_jobs = Dict{Int64, Vector{Job}}()
+            current_jobs = Dict{Int, Vector{Job}}()
             append_jobs_dict!(current_jobs, JOB_QUEUE)
             append_jobs_dict!(current_jobs, JOB_QUEUE_OK)
 
@@ -176,7 +176,7 @@ function recover_backup(filepath::AbstractString; recover_settings::Bool = true,
     nothing
 end
 
-function append_jobs_dict!(jobs_dict::Dict{Int64, Vector{Job}}, job_queue::Vector{Job})
+function append_jobs_dict!(jobs_dict::Dict{Int, Vector{Job}}, job_queue::Vector{Job})
     for job in job_queue
         job_vec = get(jobs_dict, job.id, nothing)
         if isnothing(job_vec)  # no key, create
@@ -212,7 +212,7 @@ function has_job_in(vec::Vector{Job}, job::Job)
     false
 end
 
-function has_job_in(jobs_dict::Dict{Int64, Vector{Job}}, job)
+function has_job_in(jobs_dict::Dict{Int, Vector{Job}}, job)
     job_vec = get(jobs_dict, job.id, nothing)
     if isnothing(job_vec)  # no key
         false

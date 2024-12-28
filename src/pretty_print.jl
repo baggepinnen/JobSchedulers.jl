@@ -69,11 +69,11 @@ function queue(needle::Union{AbstractString,AbstractPattern,AbstractChar}, state
     queue(state, needle)
 end
 
-queue(id::Int64) = job_query(id)
+queue(id::Int) = job_query(id)
 
 """
     all_queue()
-    all_queue(id::Int64)
+    all_queue(id::Int)
     all_queue(state::Symbol)
     all_queue(needle::Union{AbstractString,AbstractPattern,AbstractChar})
 
@@ -86,7 +86,7 @@ queue(id::Int64) = job_query(id)
 - `id::Int`: get the job with the specific `id`.
 """
 all_queue() = queue(;all=true)
-all_queue(id::Int64) = job_query(id)
+all_queue(id::Int) = job_query(id)
 
 all_queue(state::Symbol) = queue(state)
 all_queue(needle::Union{AbstractString,AbstractPattern,AbstractChar}) = queue(:all, needle)
@@ -166,7 +166,7 @@ function simplify(x::DateTime, detail::Bool = false)
         Dates.format(x, dateformat"yyyy-mm-dd HH:MM:SS")
     end
 end
-function simplify(deps::Vector{Pair{Symbol,Union{Int64, Job}}}, detail::Bool = false)
+function simplify(deps::Vector{Pair{Symbol,Union{Int, Job}}}, detail::Bool = false)
     n_dep = length(deps)
     if n_dep == 0
         "[]"
